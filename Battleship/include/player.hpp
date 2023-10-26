@@ -134,6 +134,19 @@ struct Player
             m_display_grid[row][col] = '0';
         }
     }
+
+    // ゲームが終了したかどうかを判定する関数
+    bool isGameOver()
+    {
+        for (const Ship &ship : m_fleet)
+        {
+            if (ship.m_health > 0)
+            {
+                return false; // まだ沈んでいない艦船が存在する
+            }
+        }
+        return true; // 全ての艦船が沈んでいる
+    }
 };
 
 #endif // PLAYER_HPP
