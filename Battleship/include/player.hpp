@@ -24,7 +24,11 @@ struct Player
     // ゲーム盤：2次元ベクトル
     std::vector<std::vector<char>> m_grid;
 
+    // 表示用ゲーム盤：2次元ベクトル
+    std::vector<std::vector<char>> m_display_grid;
+
     // 艦隊：Ship オブジェクトのベクトル
+    // m_fleet はC++の std::vector コンテナによって管理されている. これはリストに似たデータ構造をしている
     std::vector<Ship> m_fleet;
 
     // コンストラクタ：プレイヤーのゲーム盤と艦隊を初期化する
@@ -35,12 +39,27 @@ struct Player
         for (unsigned int it = 0; it < m_grid_rows; it++)
         {
             m_grid.push_back(row);
+            m_display_grid.push_back(row);
         }
 
         // 艦隊に各種艦船を追加
-        m_fleet.push_back(Ship('D', 3)); // 駆逐艦
-        m_fleet.push_back(Ship('C', 4)); // 巡洋艦
-        m_fleet.push_back(Ship('M', 1)); // 掃海艇
+        m_fleet.push_back(Ship('D', 3, 3)); // 駆逐艦
+        m_fleet.push_back(Ship('C', 4, 4)); // 巡洋艦
+        m_fleet.push_back(Ship('M', 1, 1)); // 掃海艇
+    }
+
+    bool checkForFreeCells(const int row_index, const int col_index, const Ship ship)
+    {
+
+        for (int it = 0; it < ship.m_size; it++)
+        {
+            if (m_grid[row_index][col_index + it] != '~')
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // 艦隊をランダムな位置に配置する関数
@@ -55,19 +74,8 @@ struct Player
                 int row_index = getRandomInterval(m_grid_rows);
                 int col_index = getRandomInterval(m_grid_cols - ship.m_size);
 
-                // 艦船が重ならずに配置できるかチェック
-                bool canPlace = true;
-                for (int it = 0; it < ship.m_size; it++)
-                {
-                    if (m_grid[row_index][col_index + it] != '~')
-                    {
-                        canPlace = false;
-                        break;
-                    }
-                }
-
                 // 重ならない場合、艦船を配置
-                if (canPlace)
+                if (checkForFreeCells(row_index, col_index, ship))
                 {
                     for (int it = 0; it < ship.m_size; it++)
                     {
@@ -76,6 +84,54 @@ struct Player
                     placed = true;
                 }
             }
+        }
+    }
+
+    void attack(int row, int col)
+    {
+        // すでに攻撃された場所かチェック
+        // ToDo 数字以外が入力されたときの対処（無限ループにならないようにする）
+        if (m_display_grid[row][col] != '~')
+        {
+            std::cout << "You have already attacked this position. Choose another one.\n";
+
+            // 同じ箇所を攻撃した場合，下の処理を行わず，mainのwhileに戻る
+            return;
+        }
+
+        // 戦艦が存在するか確認
+        if (m_grid[row][col] != '~')
+        {
+            std::cout << "Hit!\n\n";
+            m_display_grid[row][col] = 'X'; // 命中した箇所を 'X' に更新
+
+            // 艦船の耐久度を減らす
+            for (Ship &ship : m_fleet)
+            {
+                if (ship.m_ID == m_grid[row][col]) // 1. プレイヤーの艦隊（m_fleet）内のすべての艦船に対してループを回す
+                {                                  // 2. 現在の艦船（ship）のIDが、攻撃された座標（row, col）に存在する艦船のIDと一致するか確認
+                    ship.m_health--;               // 3. 一致する場合、その艦船の耐久度（m_health）を1減らす
+                    break;                         // 4. 耐久度を減らした後は、ループを抜ける（他の艦船は影響を受けない）
+                }
+            }
+            /*
+            & シンボルは参照（reference）を示す。したがって、Ship &ship は Ship 型のオブジェクトへの参照を意味する
+
+            ＜参照を使う理由＞
+            効率: オブジェクトのコピーを避けることで、メモリと時間を節約できます。
+            変更の反映: 参照を通じてオブジェクトを変更すると、その変更は元のオブジェクトにも反映されます。
+
+            参照（&）を使うと、ship は m_fleet の各要素への参照となります。
+            この場合、ループ内で ship を通じて行った変更（例えば、艦船の耐久度を減らす）は、m_fleet に直接反映されます。
+
+            shipだけだと，　_fleet の各要素は ship という新しい変数にコピーされます。
+            このコピーに対する変更は m_fleet に反映されません。
+            */
+        }
+        else
+        {
+            std::cout << "Miss.\n\n";
+            m_display_grid[row][col] = '0';
         }
     }
 };
