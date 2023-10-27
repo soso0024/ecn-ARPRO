@@ -8,15 +8,21 @@
 #include "tool.hpp"
 #include "ship.hpp"
 
-// 0 から t_max - 1 までのランダムな整数を返す関数
-bool flag = 1;
-int getRandomInterval(const int t_max)
+// 一度だけランダムナンバーを出すようにする
+bool initialized = false;
+void initializeRandom()
 {
-    if (flag)
+    if (!initialized)
     {
         srand(time(NULL));
-        flag = 0;
+        initialized = true;
     }
+}
+
+// 0 から t_max - 1 までのランダムな整数を返す関数
+int getRandomInterval(const int t_max)
+{
+    initializeRandom();
     return rand() % t_max;
 }
 
