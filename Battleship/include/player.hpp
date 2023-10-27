@@ -43,9 +43,11 @@ struct Player
         }
 
         // 艦隊に各種艦船を追加
-        m_fleet.push_back(Ship('D', 3, 3)); // 駆逐艦
-        m_fleet.push_back(Ship('C', 4, 4)); // 巡洋艦
-        m_fleet.push_back(Ship('M', 1, 1)); // 掃海艇
+        m_fleet.push_back(Ship('M', 2, 2));
+        m_fleet.push_back(Ship('S', 3, 3));
+        m_fleet.push_back(Ship('D', 3, 3));
+        m_fleet.push_back(Ship('C', 4, 4));
+        m_fleet.push_back(Ship('A', 5, 5));
     }
 
     bool checkForFreeCells(const int row_index, const int col_index, const Ship ship)
