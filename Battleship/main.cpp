@@ -5,6 +5,8 @@
 #include "ship.hpp"
 #include "tool.hpp"
 
+using namespace std;
+
 int main()
 {
     // Playerオブジェクトを生成

@@ -9,9 +9,14 @@
 #include "ship.hpp"
 
 // 0 から t_max - 1 までのランダムな整数を返す関数
+bool flag = 1;
 int getRandomInterval(const int t_max)
 {
-    srand(time(NULL));
+    if (flag)
+    {
+        srand(time(NULL));
+        flag = 0;
+    }
     return rand() % t_max;
 }
 
@@ -50,17 +55,29 @@ struct Player
         m_fleet.push_back(Ship('A', 5, 5));
     }
 
-    bool checkForFreeCells(const int row_index, const int col_index, const Ship ship)
+    bool checkForFreeCells(const int row_index, const int col_index, const Ship ship, const bool isVertical)
     {
 
-        for (int it = 0; it < ship.m_size; it++)
+        if (isVertical)
         {
-            if (m_grid[row_index][col_index + it] != '~')
+            for (int it = 0; it < ship.m_size; it++)
             {
-                return false;
+                if (m_grid[row_index + it][col_index] != '~')
+                {
+                    return false;
+                }
             }
         }
-
+        else
+        {
+            for (int it = 0; it < ship.m_size; it++)
+            {
+                if (m_grid[row_index][col_index + it] != '~')
+                {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
@@ -69,19 +86,41 @@ struct Player
     {
         for (Ship ship : m_fleet)
         {
+            bool isVertical = getRandomInterval(2);
+
             bool placed = false;
+
+            int row_index, col_index;
+
             while (!placed)
             {
-                // ランダムな位置を選ぶ
-                int row_index = getRandomInterval(m_grid_rows);
-                int col_index = getRandomInterval(m_grid_cols - ship.m_size);
+                if (isVertical == 1)
+                {
+                    row_index = getRandomInterval(m_grid_rows - ship.m_size + 1);
+                    col_index = getRandomInterval(m_grid_cols);
+                }
+                else
+                {
+                    row_index = getRandomInterval(m_grid_rows);
+                    col_index = getRandomInterval(m_grid_cols - ship.m_size + 1);
+                }
 
                 // 重ならない場合、艦船を配置
-                if (checkForFreeCells(row_index, col_index, ship))
+                if (checkForFreeCells(row_index, col_index, ship, isVertical))
                 {
-                    for (int it = 0; it < ship.m_size; it++)
+                    if (isVertical == 1)
                     {
-                        m_grid[row_index][col_index + it] = ship.m_ID;
+                        for (int it = 0; it < ship.m_size; it++)
+                        {
+                            m_grid[row_index + it][col_index] = ship.m_ID;
+                        }
+                    }
+                    else
+                    {
+                        for (int it = 0; it < ship.m_size; it++)
+                        {
+                            m_grid[row_index][col_index + it] = ship.m_ID;
+                        }
                     }
                     placed = true;
                 }
