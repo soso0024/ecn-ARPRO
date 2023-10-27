@@ -149,20 +149,30 @@ struct Player
         // 戦艦が存在するか確認
         if (m_grid[row][col] != '~')
         {
+            if (m_grid[row][col] == 'M')
+            {
+                std::cout << "Hit! It's 'M'ship!\n\n";
+                m_display_grid[row][col] = 'M'; // 命中した箇所を 'D' に更新
+            }
+            if (m_grid[row][col] == 'S')
+            {
+                std::cout << "Hit! It's 'S'ship!\n\n";
+                m_display_grid[row][col] = 'S'; // 命中した箇所を 'C' に更新
+            }
             if (m_grid[row][col] == 'D')
             {
                 std::cout << "Hit! It's 'D'ship!\n\n";
-                m_display_grid[row][col] = 'D'; // 命中した箇所を 'D' に更新
+                m_display_grid[row][col] = 'D'; // 命中した箇所を 'M' に更新
             }
             if (m_grid[row][col] == 'C')
             {
                 std::cout << "Hit! It's 'C'ship!\n\n";
                 m_display_grid[row][col] = 'C'; // 命中した箇所を 'C' に更新
             }
-            if (m_grid[row][col] == 'M')
+            if (m_grid[row][col] == 'A')
             {
-                std::cout << "Hit! It's 'M'ship!\n\n";
-                m_display_grid[row][col] = 'M'; // 命中した箇所を 'M' に更新
+                std::cout << "Hit! It's 'A'ship!\n\n";
+                m_display_grid[row][col] = 'A'; // 命中した箇所を 'M' に更新
             }
 
             // 艦船の耐久度を減らす
