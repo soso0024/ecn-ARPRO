@@ -13,5 +13,6 @@ add_executable(battleship
     include/ship.hpp
     include/tool.hpp
     include/player.hpp
+    include/aiPlayer.hpp
     main.cpp
 )

@@ -4,13 +4,22 @@
 #include "player.hpp"
 #include "ship.hpp"
 #include "tool.hpp"
+#include "aiPlayer.hpp"
+
+void answerTable(Player &player)
+{
+    int i = 1;
+
+    // プレイヤーのグリッドを表示
+    std::cout << "# --- ANSWER TABLE--- #\n\n";
+    std::cout << "<Player>" << std::endl;
+    printGrid(player.m_grid);
+    std::cout << "# ------------------- #\n\n";
+}
 
 void playerTurn(Player &player)
 {
 std:
-    std::cout << "<Player Table>\n";
-    printGrid(player.m_display_grid);
-
     int row, col;
     std::cout << "Enter the row to attack: ";
     std::cin >> row;
@@ -18,39 +27,62 @@ std:
     std::cin >> col;
 
     player.attack(row, col);
+
+    std::cout << "<Player Table>\n";
+    printGrid(player.m_display_grid);
 }
 
 int main()
 {
-    // Playerオブジェクトを生成
-    Player player1, player2;
+    // 2人プレイ用
+    // Player player1, player2;
+    // player1.fleetPlacement();
+    // player2.fleetPlacement();
+    // answerTable(player1);
+    // answerTable(player2);
+    // while (true)
+    // {
+    //     playerTurn(player1);
+    //     if (player1.isGameOver())
+    //     {
+    //         std::cout << "Player1 wins!\n";
+    //         break;
+    //     }
 
-    // プレイヤーの艦隊を配置
-    player1.fleetPlacement();
-    player2.fleetPlacement();
+    //     playerTurn(player2);
+    //     if (player2.isGameOver())
+    //     {
+    //         std::cout << "Player2 wins!\n";
+    //         break;
+    //     }
+    // }
 
-    // プレイヤーのグリッドを表示
-    std::cout << "# --- ANSWER TABLE--- #\n\n";
-    std::cout << "<Player1>\n";
-    printGrid(player1.m_grid);
+    // vs AI
+    Player humanPlayer;
+    aiPlayer aiPlayer;
 
-    std::cout << "<Player2>\n";
-    printGrid(player2.m_grid);
-    std::cout << "# ------------------- #\n\n";
+    humanPlayer.fleetPlacement();
+    aiPlayer.fleetPlacement();
+
+    answerTable(humanPlayer);
+
+    answerTable(aiPlayer);
 
     while (true)
     {
-        playerTurn(player1);
-        if (player1.isGameOver())
+        playerTurn(humanPlayer);
+        if (humanPlayer.isGameOver())
         {
-            std::cout << "Player1 wins!\n";
+            std::cout << "Human wins!\n";
             break;
         }
 
-        playerTurn(player2);
-        if (player2.isGameOver())
+        aiPlayer.attack();
+        std::cout << "<Player Table>\n";
+        printGrid(aiPlayer.m_display_grid);
+        if (aiPlayer.isGameOver())
         {
-            std::cout << "Player2 wins!\n";
+            std::cout << "AI wins!\n";
             break;
         }
     }
