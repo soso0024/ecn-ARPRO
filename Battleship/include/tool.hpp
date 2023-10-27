@@ -1,5 +1,5 @@
-#ifndef UTILITY_HPP
-#define UTILITY_HPP
+#ifndef TOOL_HPP
+#define TOOL_HPP
 #include <vector>
 #include <iostream>
 #include <random>
@@ -30,4 +30,4 @@ void printGrid(const std::vector<std::vector<char>> t_grid)
     std::cout << "\n";
 }
 
-#endif // UTILITY_HPP
+#endif // TOOL_HPP

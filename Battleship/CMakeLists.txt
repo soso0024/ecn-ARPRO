@@ -11,7 +11,7 @@ include_directories(include)
 
 add_executable(battleship
     include/ship.hpp
-    include/utility.hpp
+    include/tool.hpp
     include/player.hpp
     main.cpp
 )

@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "utility.hpp"
+#include "tool.hpp"
 #include "ship.hpp"
 
 // 0 から t_max - 1 までのランダムな整数を返す関数
@@ -102,8 +102,21 @@ struct Player
         // 戦艦が存在するか確認
         if (m_grid[row][col] != '~')
         {
-            std::cout << "Hit!\n\n";
-            m_display_grid[row][col] = 'X'; // 命中した箇所を 'X' に更新
+            if (m_grid[row][col] == 'D')
+            {
+                std::cout << "Hit! It's 'D'ship!\n\n";
+                m_display_grid[row][col] = 'D'; // 命中した箇所を 'D' に更新
+            }
+            if (m_grid[row][col] == 'C')
+            {
+                std::cout << "Hit! It's 'C'ship!\n\n";
+                m_display_grid[row][col] = 'C'; // 命中した箇所を 'C' に更新
+            }
+            if (m_grid[row][col] == 'M')
+            {
+                std::cout << "Hit! It's 'M'ship!\n\n";
+                m_display_grid[row][col] = 'M'; // 命中した箇所を 'M' に更新
+            }
 
             // 艦船の耐久度を減らす
             for (Ship &ship : m_fleet)
@@ -131,7 +144,7 @@ struct Player
         else
         {
             std::cout << "Miss.\n\n";
-            m_display_grid[row][col] = '0';
+            m_display_grid[row][col] = 'X';
         }
     }
 
