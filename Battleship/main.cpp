@@ -5,11 +5,25 @@
 #include "ship.hpp"
 #include "tool.hpp"
 
+void playerTurn(Player &player)
+{
+std:
+    std::cout << "<Player Table>\n";
+    printGrid(player.m_display_grid);
+
+    int row, col;
+    std::cout << "Enter the row to attack: ";
+    std::cin >> row;
+    std::cout << "Enter the column to attack: ";
+    std::cin >> col;
+
+    player.attack(row, col);
+}
+
 int main()
 {
     // Playerオブジェクトを生成
-    Player player1;
-    Player player2;
+    Player player1, player2;
 
     // プレイヤーの艦隊を配置
     player1.fleetPlacement();
@@ -26,40 +40,18 @@ int main()
 
     while (true)
     {
-        std::cout << "<Player1 Table>\n";
-        printGrid(player1.m_display_grid);
-
-        int player1_row, player1_col;
-        std::cout << "Enter the row to attack: ";
-        std::cin >> player1_row;
-        std::cout << "Enter the column to attack: ";
-        std::cin >> player1_col;
-
-        player1.attack(player1_row, player1_col); // 攻撃を行い，　結果を判定
-
-        std::cout << "<Player2 Table>\n";
-        printGrid(player2.m_display_grid);
-
-        int player2_row, player2_col;
-        std::cout << "Enter the row to attack: ";
-        std::cin >> player2_row;
-        std::cout << "Enter the column to attack: ";
-        std::cin >> player2_col;
-
-        player2.attack(player2_row, player2_col); // 攻撃を行い，　結果を判定
-
-        // ゲームが終了したかどうかを判定
+        playerTurn(player1);
         if (player1.isGameOver())
         {
-            std::cout << "Congratulation, you've sunk all the ships!\n";
-            break; // ゲーム終了
+            std::cout << "Player1 wins!\n";
+            break;
         }
 
-        // ゲームが終了したかどうかを判定
+        playerTurn(player2);
         if (player2.isGameOver())
         {
-            std::cout << "Congratulation, you've sunk all the ships!\n";
-            break; // ゲーム終了
+            std::cout << "Player2 wins!\n";
+            break;
         }
     }
 
