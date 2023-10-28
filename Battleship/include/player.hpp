@@ -205,6 +205,15 @@ struct Player
         }
     }
 
+    void shipHealth()
+    {
+        for (Ship &ship : m_fleet)
+        {
+            std::cout << "Hit points of " << ship.m_ID << ": " << ship.m_health << std::endl;
+        }
+        std::cout << std::endl;
+    }
+
     // ゲームが終了したかどうかを判定する関数
     bool isGameOver()
     {

@@ -71,6 +71,7 @@ int main()
     while (true)
     {
         playerTurn(humanPlayer);
+        humanPlayer.shipHealth();
         if (humanPlayer.isGameOver())
         {
             std::cout << "Human wins!\n";
@@ -80,6 +81,7 @@ int main()
         aiPlayer.attack();
         std::cout << "<Player Table>\n";
         printGrid(aiPlayer.m_display_grid);
+        aiPlayer.shipHealth();
         if (aiPlayer.isGameOver())
         {
             std::cout << "AI wins!\n";
