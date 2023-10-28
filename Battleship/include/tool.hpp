@@ -4,10 +4,22 @@
 #include <iostream>
 #include <random>
 
-// 指定された最大値までのランダムな整数を返す関数
-int getRandomInt(const unsigned int t_max)
+// 一度だけランダムナンバーを出すようにする
+bool initialized = false;
+void initializeRandom()
 {
-    return rand() % (t_max + 1);
+    if (!initialized)
+    {
+        srand(time(NULL));
+        initialized = true;
+    }
+}
+
+// 0 から t_max - 1 までのランダムな整数を返す関数
+int getRandomInt(const int t_max)
+{
+    initializeRandom();
+    return rand() % t_max;
 }
 
 // グリッドを表示する関数

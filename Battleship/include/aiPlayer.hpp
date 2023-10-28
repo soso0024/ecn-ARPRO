@@ -10,8 +10,8 @@ public:
     void attack()
     {
         // AIの攻撃ロジック
-        int row = getRandomInterval(10);
-        int col = getRandomInterval(10);
+        int row = getRandomInt(10);
+        int col = getRandomInt(10);
 
         std::cout << "AI's selection of row: " << row << std::endl;
         std::cout << "AI's selection of col: " << col << std::endl;

@@ -8,24 +8,6 @@
 #include "tool.hpp"
 #include "ship.hpp"
 
-// 一度だけランダムナンバーを出すようにする
-bool initialized = false;
-void initializeRandom()
-{
-    if (!initialized)
-    {
-        srand(time(NULL));
-        initialized = true;
-    }
-}
-
-// 0 から t_max - 1 までのランダムな整数を返す関数
-int getRandomInterval(const int t_max)
-{
-    initializeRandom();
-    return rand() % t_max;
-}
-
 struct Player
 {
     // 定数：ゲーム盤のサイズ
@@ -92,7 +74,7 @@ struct Player
     {
         for (Ship ship : m_fleet)
         {
-            bool isVertical = getRandomInterval(2);
+            bool isVertical = getRandomInt(2);
 
             bool placed = false;
 
@@ -102,13 +84,13 @@ struct Player
             {
                 if (isVertical == 1)
                 {
-                    row_index = getRandomInterval(m_grid_rows - ship.m_size + 1);
-                    col_index = getRandomInterval(m_grid_cols);
+                    row_index = getRandomInt(m_grid_rows - ship.m_size + 1);
+                    col_index = getRandomInt(m_grid_cols);
                 }
                 else
                 {
-                    row_index = getRandomInterval(m_grid_rows);
-                    col_index = getRandomInterval(m_grid_cols - ship.m_size + 1);
+                    row_index = getRandomInt(m_grid_rows);
+                    col_index = getRandomInt(m_grid_cols - ship.m_size + 1);
                 }
 
                 // 重ならない場合、艦船を配置

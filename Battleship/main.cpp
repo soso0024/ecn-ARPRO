@@ -19,7 +19,6 @@ void answerTable(Player &player)
 
 void playerTurn(Player &player)
 {
-std:
     int row, col;
     std::cout << "Enter the row to attack: ";
     std::cin >> row;
