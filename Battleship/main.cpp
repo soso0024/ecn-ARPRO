@@ -93,31 +93,43 @@ void withAI(Player humanPlayer, aiPlayer aiPlayer)
     }
 }
 
-int main()
+int selectGameMode()
 {
     int mode;
-    std::cout << "Select the mode of battleship ---> (1) Two Player (2) vs AI" << std::endl
+    std::cout << "Select Game Mode:" << std::endl;
+    std::cout << "1. Play with another player" << std::endl;
+    std::cout << "2. Play with AI" << std::endl
               << "Your choice: ";
     std::cin >> mode;
 
-    if (mode == 1)
+    // エラーハンドリング: 無効な選択肢が入力された場合
+    while (mode != 1 && mode != 2)
+    {
+        std::cout << "Invalid selection. Please select again: \n";
+        std::cin >> mode;
+    }
+
+    return mode;
+}
+
+int main()
+{
+    int gameMode = selectGameMode();
+
+    if (gameMode == 1)
     {
         Player player1;
         Player player2;
 
         withPlayer(player1, player2);
     }
-    else if (mode == 2)
+    else if (gameMode == 2)
     {
         // vs AI
         Player humanPlayer;
         aiPlayer aiPlayer;
 
         withAI(humanPlayer, aiPlayer);
-    }
-    else
-    {
-        std::cout << "You can't play wwwwwwwwwwww" << std::endl;
     }
 
     return 0;
