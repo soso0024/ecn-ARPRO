@@ -31,35 +31,41 @@ void playerTurn(Player &player)
     printGrid(player.m_display_grid);
 }
 
-int main()
+void withPlayer(Player player1, Player player2)
 {
     // 2人プレイ用
-    // Player player1, player2;
-    // player1.fleetPlacement();
-    // player2.fleetPlacement();
-    // answerTable(player1);
-    // answerTable(player2);
-    // while (true)
-    // {
-    //     playerTurn(player1);
-    //     if (player1.isGameOver())
-    //     {
-    //         std::cout << "Player1 wins!\n";
-    //         break;
-    //     }
+    player1.fleetPlacement();
+    player2.fleetPlacement();
 
-    //     playerTurn(player2);
-    //     if (player2.isGameOver())
-    //     {
-    //         std::cout << "Player2 wins!\n";
-    //         break;
-    //     }
-    // }
+    answerTable(player1);
+    answerTable(player2);
 
-    // vs AI
-    Player humanPlayer;
-    aiPlayer aiPlayer;
+    while (true)
+    {
+        playerTurn(player1);
 
+        player1.shipHealth();
+
+        if (player1.isGameOver())
+        {
+            std::cout << "Player1 wins!\n";
+            break;
+        }
+
+        playerTurn(player2);
+
+        player2.shipHealth();
+
+        if (player2.isGameOver())
+        {
+            std::cout << "Player2 wins!\n";
+            break;
+        }
+    }
+}
+
+void withAI(Player humanPlayer, aiPlayer aiPlayer)
+{
     humanPlayer.fleetPlacement();
     aiPlayer.fleetPlacement();
 
@@ -86,6 +92,34 @@ int main()
             std::cout << "AI wins!\n";
             break;
         }
+    }
+}
+
+int main()
+{
+    int mode;
+    std::cout << "Select the mode of battleship ---> (1) Two Player (2) vs AI" << std::endl
+              << "Your choice: ";
+    std::cin >> mode;
+
+    if (mode == 1)
+    {
+        Player player1;
+        Player player2;
+
+        withPlayer(player1, player2);
+    }
+    else if (mode == 2)
+    {
+        // vs AI
+        Player humanPlayer;
+        aiPlayer aiPlayer;
+
+        withAI(humanPlayer, aiPlayer);
+    }
+    else
+    {
+        std::cout << "You can't play wwwwwwwwwwww" << std::endl;
     }
 
     return 0;
