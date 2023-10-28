@@ -8,8 +8,6 @@
 
 void answerTable(Player &player)
 {
-    int i = 1;
-
     // プレイヤーのグリッドを表示
     std::cout << "# --- ANSWER TABLE--- #\n\n";
     std::cout << "<Player>" << std::endl;
