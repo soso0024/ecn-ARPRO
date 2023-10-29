@@ -42,7 +42,7 @@ void withPlayer(Player player1, Player player2)
     {
         playerTurn(player1);
 
-        player1.shipHealth();
+        player1.printShipHealth();
 
         if (player1.isGameOver())
         {
@@ -52,7 +52,7 @@ void withPlayer(Player player1, Player player2)
 
         playerTurn(player2);
 
-        player2.shipHealth();
+        player2.printShipHealth();
 
         if (player2.isGameOver())
         {
@@ -74,7 +74,7 @@ void withAI(Player humanPlayer, aiPlayer aiPlayer)
     while (true)
     {
         playerTurn(humanPlayer);
-        humanPlayer.shipHealth();
+        humanPlayer.printShipHealth();
         if (humanPlayer.isGameOver())
         {
             std::cout << "Human wins!\n";
@@ -84,7 +84,7 @@ void withAI(Player humanPlayer, aiPlayer aiPlayer)
         aiPlayer.attack();
         std::cout << "<Player Table>\n";
         printGrid(aiPlayer.m_display_grid);
-        aiPlayer.shipHealth();
+        aiPlayer.printShipHealth();
         if (aiPlayer.isGameOver())
         {
             std::cout << "AI wins!\n";

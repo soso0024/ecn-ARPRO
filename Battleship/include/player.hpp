@@ -187,7 +187,7 @@ struct Player
         }
     }
 
-    void shipHealth()
+    void printShipHealth()
     {
         for (Ship &ship : m_fleet)
         {

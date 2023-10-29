@@ -22,7 +22,7 @@ int getRandomInt(const int t_max)
     return rand() % t_max;
 }
 
-// グリッドを表示する関数
+// Grid (格子) を表示する関数
 void printGrid(const std::vector<std::vector<char>> t_grid)
 {
     // 各行についてループ
