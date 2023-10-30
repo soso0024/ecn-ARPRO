@@ -10,7 +10,7 @@ void answerTable(Player &player)
 {
     // プレイヤーのグリッドを表示
     std::cout << "# --- ANSWER TABLE--- #\n\n";
-    std::cout << "<Player>" << std::endl;
+    std::cout << "<Ship Table>" << std::endl;
     printGrid(player.m_grid);
     std::cout << "# ------------------- #\n\n";
 }
@@ -25,8 +25,17 @@ void playerTurn(Player &player)
 
     player.attack(row, col);
 
-    std::cout << "<Player Table>\n";
+    std::cout << "<Ship Table>\n";
     printGrid(player.m_display_grid);
+    player.printShipHealth();
+}
+
+void aiTurn(aiPlayer &player)
+{
+    player.attack();
+    std::cout << "<Ship Table>\n";
+    printGrid(player.m_display_grid);
+    player.printShipHealth();
 }
 
 void withPlayer(Player player1, Player player2)
@@ -52,8 +61,6 @@ void withPlayer(Player player1, Player player2)
 
         playerTurn(player2);
 
-        player2.printShipHealth();
-
         if (player2.isGameOver())
         {
             std::cout << "Player2 wins!\n";
@@ -68,7 +75,6 @@ void withAI(Player humanPlayer, aiPlayer aiPlayer)
     aiPlayer.fleetPlacement();
 
     answerTable(humanPlayer);
-
     answerTable(aiPlayer);
 
     while (true)
@@ -81,10 +87,8 @@ void withAI(Player humanPlayer, aiPlayer aiPlayer)
             break;
         }
 
-        aiPlayer.attack();
-        std::cout << "<Player Table>\n";
-        printGrid(aiPlayer.m_display_grid);
-        aiPlayer.printShipHealth();
+        aiTurn(aiPlayer);
+
         if (aiPlayer.isGameOver())
         {
             std::cout << "AI wins!\n";
