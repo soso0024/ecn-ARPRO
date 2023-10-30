@@ -1,6 +1,6 @@
 # 🚀 cpp-ARPRO
 
-> ECNの授業で作成したC++のプログラムです。
+> ECNの授業で作成したC++のプログラムです.
 
 [![C++](https://img.shields.io/badge/-C++-00599C?style=flat-square&logo=c)](https://isocpp.org/)
 [![CMake](https://img.shields.io/badge/-CMake-064F8C?style=flat-square&logo=cmake)](https://cmake.org/)
