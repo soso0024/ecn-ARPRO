@@ -51,8 +51,6 @@ void withPlayer(Player player1, Player player2)
     {
         playerTurn(player1);
 
-        player1.printShipHealth();
-
         if (player1.isGameOver())
         {
             std::cout << "Player1 wins!\n";

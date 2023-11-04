@@ -24,6 +24,14 @@ struct Player
     // m_fleet はC++の std::vector コンテナによって管理されている. これはリストに似たデータ構造をしている
     std::vector<Ship> m_fleet;
 
+    // 最後にヒットした位置
+    // AIの攻撃が船にヒットした場合には，　この変数を更新　（初期値は無効な座標にする）
+    std::pair<int, int> last_hit_position = {-1, -1};
+
+    // 攻撃されたセルを追跡する盤面
+    // 全てのセルを`false`で初期化し，　攻撃されたら`true`に更新する
+    std::vector<std::vector<bool>> attacks_grid;
+
     // コンストラクタ：プレイヤーのゲーム盤と艦隊を初期化する
     Player()
     {
@@ -33,6 +41,12 @@ struct Player
         {
             m_grid.push_back(row);
             m_display_grid.push_back(row);
+        }
+
+        std::vector<bool> attacks_row(m_grid_cols, false);
+        for (unsigned int i = 0; i < m_grid_rows; i++)
+        {
+            attacks_grid.push_back(attacks_row);
         }
 
         // 艦隊に各種艦船を追加
