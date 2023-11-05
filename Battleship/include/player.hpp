@@ -171,6 +171,8 @@ struct Player
                 m_display_grid[row][col] = 'A'; // 命中した箇所を 'M' に更新
             }
 
+            last_hit_position = {row, col};
+
             // 艦船の耐久度を減らす
             for (Ship &ship : m_fleet)
             {
@@ -199,6 +201,9 @@ struct Player
             std::cout << "Miss.\n\n";
             m_display_grid[row][col] = 'X';
         }
+
+        // 攻撃されたセルを記録
+        attacks_grid[row][col] = true;
     }
 
     void printShipHealth()

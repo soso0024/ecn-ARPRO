@@ -32,7 +32,7 @@ void playerTurn(Player &player)
 
 void aiTurn(aiPlayer &player)
 {
-    player.attack();
+    player.logical_attack();
     std::cout << "<Ship Table>\n";
     printGrid(player.m_display_grid);
     player.printShipHealth();
@@ -78,7 +78,7 @@ void withAI(Player humanPlayer, aiPlayer aiPlayer)
     while (true)
     {
         playerTurn(humanPlayer);
-        humanPlayer.printShipHealth();
+
         if (humanPlayer.isGameOver())
         {
             std::cout << "Human wins!\n";
