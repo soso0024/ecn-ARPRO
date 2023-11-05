@@ -5,6 +5,8 @@
 
 class aiPlayer : public Player
 {
+    std::vector<std::pair<int, int>> potential_targets;
+
     // 特定のセルが既に攻撃されたかどうかを確認
     bool isAttacked(int row, int col) const
     {
@@ -22,7 +24,11 @@ class aiPlayer : public Player
     {
         return m_grid[row][col] != '~';
     }
-    std::vector<std::pair<int, int>> potential_targets;
+
+    bool is_ship_sunk(int row, int col) const
+    {
+        return false;
+    }
 
     // Helper function to update potential targets around the last hit position
     void update_potential_targets()
@@ -40,10 +46,14 @@ class aiPlayer : public Player
         }
     }
 
+    void print_ai_selection(int row, int col)
+    {
+        std::cout << "AI's selection of row: " << row << std::endl;
+        std::cout << "AI's selection of col: " << col << std::endl;
+    }
+
 public:
     aiPlayer() : Player() {}
-
-    // Additional methods...
 
     // Last hit position attack logic
     void logical_attack()
@@ -79,16 +89,17 @@ public:
         // Update last_hit_position and attacks_grid based on the result of the attack
         if (check_hit(row, col)) // This method needs to reflect the result after the attack
         {
-            last_hit_position = {row, col}; // Only update if it was a hit
+            if (is_ship_sunk(row, col))
+            {
+                last_hit_position = {-1, -1};
+            }
+            else
+            {
+                last_hit_position = {row, col}; // Only update if it was a hit
+            }
         }
         // Record that the cell has been attacked in attacks_grid
         attacks_grid[row][col] = true;
-    }
-
-    void print_ai_selection(int row, int col)
-    {
-        std::cout << "AI's selection of row: " << row << std::endl;
-        std::cout << "AI's selection of col: " << col << std::endl;
     }
 };
 

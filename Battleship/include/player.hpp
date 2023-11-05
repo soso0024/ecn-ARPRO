@@ -20,7 +20,7 @@ struct Player
     // 表示用ゲーム盤：2次元ベクトル
     std::vector<std::vector<char>> m_display_grid;
 
-    // 艦隊：Ship オブジェクトのベクトル
+    // 艦隊(fleet)：Ship オブジェクトのベクトル
     // m_fleet はC++の std::vector コンテナによって管理されている. これはリストに似たデータ構造をしている
     std::vector<Ship> m_fleet;
 
@@ -176,10 +176,10 @@ struct Player
             // 艦船の耐久度を減らす
             for (Ship &ship : m_fleet)
             {
-                if (ship.m_ID == m_grid[row][col]) // 1. プレイヤーの艦隊（m_fleet）内のすべての艦船に対してループを回す
-                {                                  // 2. 現在の艦船（ship）のIDが、攻撃された座標（row, col）に存在する艦船のIDと一致するか確認
-                    ship.m_health--;               // 3. 一致する場合、その艦船の耐久度（m_health）を1減らす
-                    break;                         // 4. 耐久度を減らした後は、ループを抜ける（他の艦船は影響を受けない）
+                if (ship.m_ID == m_grid[row][col] && ship.m_health > 0) // 1. プレイヤーの艦隊（m_fleet）内のすべての艦船に対してループを回す
+                {                                                       // 2. 現在の艦船（ship）のIDが、攻撃された座標（row, col）に存在する艦船のIDと一致するか確認
+                    ship.m_health--;                                    // 3. 一致する場合、その艦船の耐久度（m_health）を1減らす
+                    break;                                              // 4. 耐久度を減らした後は、ループを抜ける（他の艦船は影響を受けない）
                 }
             }
             /*
