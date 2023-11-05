@@ -5,9 +5,6 @@
 
 class aiPlayer : public Player
 {
-public:
-    aiPlayer() : Player() {}
-
     // 特定のセルが既に攻撃されたかどうかを確認
     bool isAttacked(int row, int col) const
     {
@@ -25,78 +22,67 @@ public:
     {
         return m_grid[row][col] != '~';
     }
+    std::vector<std::pair<int, int>> potential_targets;
 
-    // 最後にヒットした位置から攻撃可能なセルを探し、その中からランダムにセルを選んで攻撃
+    // Helper function to update potential targets around the last hit position
+    void update_potential_targets()
+    {
+        potential_targets.clear();
+        static const std::vector<std::pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        for (const auto &dir : directions)
+        {
+            int new_row = last_hit_position.first + dir.first;
+            int new_col = last_hit_position.second + dir.second;
+            if (isValid(new_row, new_col) && !isAttacked(new_row, new_col))
+            {
+                potential_targets.push_back({new_row, new_col});
+            }
+        }
+    }
+
+public:
+    aiPlayer() : Player() {}
+
+    // Additional methods...
+
+    // Last hit position attack logic
     void logical_attack()
     {
         int row, col;
-        // Check if the last hit position is valid
+        // Update potential targets around the last hit position
         if (last_hit_position.first != -1 && last_hit_position.second != -1)
         {
-            // Logic to attack around the last hit position
-            // TODO: Implement the logic to check around the last_hit_position
-            std::vector<std::pair<int, int>> potential_target;
-            std::vector<std::pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
-            for (auto &dir : directions)
-            {
-                int new_row = last_hit_position.first + dir.first;
-                int new_col = last_hit_position.second + dir.second;
-                // セルが盤面の範囲かつ未攻撃であればリストに追加
-                if (isValid(new_row, new_col) && !isAttacked(new_row, new_col))
-                {
-                    std::cout << "Im here_0" << std::endl;
+            update_potential_targets();
+        }
 
-                    potential_target.push_back({new_row, new_col});
-                }
-                std::cout << "Im here_1" << std::endl;
-            }
-            if (!potential_target.empty())
-            {
-                int rand_index = getRandomInt(potential_target.size());
-                auto target = potential_target[rand_index];
-                row = target.first;  // 更新された行の値
-                col = target.second; // 更新された列の値
-
-                print_ai_selection(row, col); // 正しい行と列を表示
-                Player::attack(row, col);     // 攻撃を実行
-
-                // 攻撃結果に基づいて last_hit_position と attacks_grid を更新
-                if (check_hit(row, col)) // このメソッドは攻撃後の結果を反映する必要があります
-                {
-                    last_hit_position = {row, col}; // ヒットした場合にのみ更新
-                    std::cout << "Im here_2" << std::endl;
-                }
-                else
-                {
-                    if (!potential_target.empty())
-                    {
-                        last_hit_position = {row, col}; // ヒットした場合にのみ更新
-                        std::cout << "Im here_3" << std::endl;
-                    }
-                }
-            }
-            std::cout << "Im here_4" << std::endl;
+        // Select attack position from potential targets
+        if (!potential_targets.empty())
+        {
+            int rand_index = getRandomInt(potential_targets.size());
+            auto target = potential_targets[rand_index];
+            row = target.first;  // Updated row value
+            col = target.second; // Updated column value
         }
         else
         {
-            // Select a random position that has not been attacked yet
+            // Select a new random position that has not been attacked yet
             do
             {
-                row = getRandomInt(10);
-                col = getRandomInt(10);
-            } while (attacks_grid[row][col]); // 既に攻撃された箇所を除く `attacks_grid`は`bool`型
-
-            print_ai_selection(row, col); // 正しい行と列を表示
-            Player::attack(row, col);     // 攻撃を実行
-
-            // 攻撃結果に基づいて last_hit_position と attacks_grid を更新
-            if (check_hit(row, col)) // このメソッドは攻撃後の結果を反映する必要があります
-            {
-                last_hit_position = {row, col}; // ヒットした場合にのみ更新
-            }
-            // attacks_grid は既に攻撃されたセルを true で記録する
-            attacks_grid[row][col] = true;
+                row = getRandomInt(m_grid_rows);
+                col = getRandomInt(m_grid_cols);
+            } while (isAttacked(row, col)); // Avoid already attacked positions
         }
+
+        print_ai_selection(row, col); // Display the correct row and column
+        Player::attack(row, col);     // Execute the attack
+
+        // Update last_hit_position and attacks_grid based on the result of the attack
+        if (check_hit(row, col)) // This method needs to reflect the result after the attack
+        {
+            last_hit_position = {row, col}; // Only update if it was a hit
+        }
+        // Record that the cell has been attacked in attacks_grid
+        attacks_grid[row][col] = true;
     }
 
     void print_ai_selection(int row, int col)
